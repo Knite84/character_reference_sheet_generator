@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Character Reference Sheet Generator</title>
+  <meta name="description" content="Generate high-resolution character reference sheets locally in your browser. Desktop-ready for GitHub Pages.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/collage.css">
+</head>
+<body>
+  <div id="app" class="app-container">
+    <!-- Top Navigation Bar -->
+    <header class="top-nav">
+      <div class="nav-brand">
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <polyline points="21 15 16 10 5 21"></polyline>
+          </svg>
+        </div>
+        <div class="brand-titles">
+          <h1>RefSheet Studio</h1>
+          <span class="badge-local">100% Local &bull; Client-Side</span>
+        </div>
+      </div>
+
+      <!-- Template Selector -->
+      <div class="nav-templates" id="templateSelector">
+        <span class="template-label">Template:</span>
+        <div class="template-tabs" role="tablist">
+          <button class="template-btn active" data-template="minimal" role="tab" aria-selected="true" title="3:2 Aspect Ratio (3,000 x 2,000 px)">
+            <span class="btn-name">Minimal</span>
+            <span class="btn-meta">3:2 &bull; 3000&times;2000</span>
+          </button>
+          <button class="template-btn" data-template="detailed" role="tab" aria-selected="false" title="2:1 Aspect Ratio (4,000 x 2,000 px)">
+            <span class="btn-name">Detailed</span>
+            <span class="btn-meta">2:1 &bull; 4000&times;2000</span>
+          </button>
+          <button class="template-btn" data-template="col3" role="tab" aria-selected="false" title="3:2 Aspect Ratio (3,000 x 2,000 px) - 3 Columns (1:2 each)">
+            <span class="btn-name">3-Column</span>
+            <span class="btn-meta">3:2 &bull; 3000&times;2000</span>
+          </button>
+          <button class="template-btn" data-template="col2" role="tab" aria-selected="false" title="1:1 Aspect Ratio (3,000 x 3,000 px) - 2 Columns (1:2 each)">
+            <span class="btn-name">2-Column</span>
+            <span class="btn-meta">1:1 &bull; 3000&times;3000</span>
+          </button>
+          <button class="template-btn" data-template="grid4" role="tab" aria-selected="false" title="1:1 Aspect Ratio (3,000 x 3,000 px) - 4 Grid (1:1 each)">
+            <span class="btn-name">4-Grid</span>
+            <span class="btn-meta">1:1 &bull; 3000&times;3000</span>
+          </button>
+          <button class="template-btn" data-template="grid9" role="tab" aria-selected="false" title="1:1 Aspect Ratio (3,500 x 3,500 px) - 9 Grid (1:1 each)">
+            <span class="btn-name">9-Grid</span>
+            <span class="btn-meta">1:1 &bull; 3500&times;3500</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Actions Bar -->
+      <div class="nav-actions">
+        <button id="btnClearCollage" class="btn btn-secondary" title="Clear all wells in current sheet">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+          <span>Reset Wells</span>
+        </button>
+
+        <div class="export-group">
+          <select id="exportFormat" class="select-format" title="Export File Format">
+            <option value="png">PNG (Lossless)</option>
+            <option value="jpeg">JPG (High Quality)</option>
+          </select>
+          <button id="btnExport" class="btn btn-primary" title="Export high-resolution reference sheet to disk">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span id="exportBtnText">Export Sheet</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Studio Body -->
+    <main class="studio-main">
+      <!-- Media Pool Sidebar -->
+      <aside class="media-sidebar" id="mediaSidebar">
+        <div class="sidebar-header">
+          <div class="header-title-group">
+            <h2>Media Library</h2>
+            <span id="mediaCount" class="count-badge">0 photos</span>
+          </div>
+          <button id="btnClearMedia" class="btn-icon" title="Clear all uploaded media" style="display: none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Upload Drop Target -->
+        <div class="upload-dropzone" id="uploadDropzone">
+          <input type="file" id="fileInput" multiple accept="image/*" class="file-input-hidden">
+          <div class="dropzone-content">
+            <div class="upload-icon-circle">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+            </div>
+            <div class="dropzone-text">
+              <strong>Add Photos</strong>
+              <span>Drop files here or click to browse</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Media Thumbnails Grid -->
+        <div class="media-list-container">
+          <div class="media-list" id="mediaList">
+            <!-- Populated dynamically via JS -->
+            <div class="empty-media-msg" id="emptyMediaMsg">
+              <p>No photos uploaded yet</p>
+              <small>Upload character renders, turns, or face shots. Drag them into any sheet well.</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-tips">
+          <p><strong>💡 Quick Tips:</strong></p>
+          <ul>
+            <li>Drag any thumbnail into a well</li>
+            <li>Drag & pan inside a well to reposition</li>
+            <li>Mouse wheel or slider to zoom</li>
+            <li>Drag between wells to swap/move</li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Workspace Area -->
+      <section class="workspace-area" id="workspaceArea">
+        <div class="workspace-viewport" id="workspaceViewport">
+          <!-- The Collage Board -->
+          <div class="collage-board" id="collageBoard">
+            <!-- Wells are rendered dynamically according to active template -->
+          </div>
+        </div>
+
+        <!-- Floating Status / Resolution Indicator -->
+        <div class="workspace-statusbar">
+          <div class="status-item">
+            <span class="status-label">Active Preset:</span>
+            <span id="statusPresetName" class="status-value">Minimal Character Sheet</span>
+          </div>
+          <div class="status-separator">&bull;</div>
+          <div class="status-item">
+            <span class="status-label">Target Export:</span>
+            <span id="statusExportRes" class="status-value mono">3,000 &times; 2,000 px</span>
+          </div>
+          <div class="status-separator">&bull;</div>
+          <div class="status-item">
+            <span class="status-label">Gutter:</span>
+            <span class="status-value mono">8px #dedede</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Hidden Export Canvas -->
+    <canvas id="exportCanvas" style="display: none;"></canvas>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast"></div>
+  </div>
+
+  <!-- Modular Scripts -->
+  <script src="js/templates.js"></script>
+  <script src="js/mediaPool.js"></script>
+  <script src="js/wellRenderer.js"></script>
+  <script src="js/exporter.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

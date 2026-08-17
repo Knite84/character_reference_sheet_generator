@@ -10,21 +10,19 @@ Built specifically for desktop workflows, video generation reference pipelines, 
 
 - **100% Local & Private**: All photos are processed in local browser memory via HTML5 Canvas. No images are ever uploaded to an external server.
 - **Resolution-Independent Pipeline**: Upload source images of any resolution (even 15,000px+), and export at crisp, designated high resolutions.
-- **3 Native Reference Sheet Templates**:
-  - **Minimal Character Reference Sheet**: `3:2` Aspect Ratio &bull; Exports at `3,000 x 2,000 px`
-    - `1:1 Face Front`
-    - `1:1 Face 3/4 Side`
-    - `1:2 Standing Front`
-    - `1:2 Standing Back`
-  - **Detailed Character Reference Sheet**: `2:1` Aspect Ratio &bull; Exports at `4,000 x 2,000 px`
-    - `1:1 Face Front`
-    - `1:1 Face 3/4 Side`
-    - `1:1 Face Smiling`
-    - `1:1 Face Emotion / Misc`
-    - `1:2 Standing Front`
-    - `1:2 Standing Back`
-  - **9-Grid Reference Sheet**: `1:1` Aspect Ratio &bull; Exports at `3,500 x 3,500 px`
-    - 9 equal `1:1` square content wells in a 3x3 uniform grid.
+- **6 Native Reference Sheet Templates**:
+  - **Minimal**: `3:2` Aspect Ratio &bull; Exports at `3,000 x 2,000 px`
+    - `1:1 Face Front`, `1:1 Face 3/4 Side`, `1:2 Standing Front`, `1:2 Standing Back`
+  - **Detailed**: `2:1` Aspect Ratio &bull; Exports at `4,000 x 2,000 px`
+    - 4x `1:1` Expressions (`Front`, `3/4 Side`, `Smiling`, `Emotion`) + 2x `1:2` (`Standing Front`, `Standing Back`)
+  - **3-Column**: `3:2` Aspect Ratio &bull; Exports at `3,000 x 2,000 px`
+    - 3 tall `1:2` columns (e.g. Turnaround: Front, 3/4, Back or 3 outfit variations)
+  - **2-Column**: `1:1` Aspect Ratio &bull; Exports at `3,000 x 3,000 px`
+    - 2 tall `1:2` columns (e.g. Standing Front, Standing Back)
+  - **4-Grid**: `1:1` Aspect Ratio &bull; Exports at `3,000 x 3,000 px`
+    - 4 equal `1:1` squares (2x2 grid)
+  - **9-Grid**: `1:1` Aspect Ratio &bull; Exports at `3,500 x 3,500 px`
+    - 9 equal `1:1` squares (3x3 grid)
 - **Fixed Layout & Gutters**: Fixed `#dedede` border and `8px` gutters around and between every well, scaled proportionally on high-res export.
 - **Intuitive Manipulation**:
   - **Pan / Slide**: Click and drag inside any populated well to re-frame the shot.
