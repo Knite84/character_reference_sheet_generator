@@ -23,7 +23,10 @@ Built specifically for desktop workflows, video generation reference pipelines, 
     - 4 equal `1:1` squares (2x2 grid)
   - **9-Grid**: `1:1` Aspect Ratio &bull; Exports at `3,500 x 3,500 px`
     - 9 equal `1:1` squares (3x3 grid)
-- **Fixed Layout & Gutters**: Fixed `#dedede` border and `8px` gutters around and between every well, scaled proportionally on high-res export.
+- **Configurable Gutters & Borders**:
+  - Customize gutter pixel width (0px to 32px) via live slider.
+  - Choose any color using the color wheel/picker, hex input (e.g. `#dedede`, `#18181b`, `#ffffff`), or quick swatches.
+  - Automatically scales proportionally onto high-res canvas exports.
 - **Intuitive Manipulation**:
   - **Pan / Slide**: Click and drag inside any populated well to re-frame the shot.
   - **Zoom / Scaling**: Scroll with your mouse wheel or adjust the floating slider on hover.

@@ -10,6 +10,10 @@ class App {
 
     this.currentTemplateId = 'minimal';
 
+    // Gutter Configuration
+    this.gutterSize = 8;
+    this.gutterColor = '#dedede';
+
     // UI Elements
     this.templateSelectorEl = document.getElementById('templateSelector');
     this.btnClearCollageEl = document.getElementById('btnClearCollage');
@@ -20,7 +24,19 @@ class App {
     this.collageBoardEl = document.getElementById('collageBoard');
     this.statusPresetNameEl = document.getElementById('statusPresetName');
     this.statusExportResEl = document.getElementById('statusExportRes');
+    this.statusGutterDisplayEl = document.getElementById('statusGutterDisplay');
     this.toastEl = document.getElementById('toast');
+
+    // Gutter Controls UI
+    this.btnGutterSettingsEl = document.getElementById('btnGutterSettings');
+    this.gutterDropdownEl = document.getElementById('gutterDropdown');
+    this.gutterWidthSliderEl = document.getElementById('gutterWidthSlider');
+    this.gutterWidthValEl = document.getElementById('gutterWidthVal');
+    this.gutterStatusTextEl = document.getElementById('gutterStatusText');
+    this.gutterColorPreviewEl = document.getElementById('gutterColorPreview');
+    this.gutterColorPickerEl = document.getElementById('gutterColorPicker');
+    this.gutterHexInputEl = document.getElementById('gutterHexInput');
+    this.btnResetGutterEl = document.getElementById('btnResetGutter');
 
     this.init();
   }
@@ -41,13 +57,16 @@ class App {
 
     this.exporter = new RefSheetExporter(this.wellManager, this.mediaPool);
 
-    // 2. Bind Navigation & Actions
+    // 2. Apply initial gutter CSS variables
+    this.applyGutterSettings();
+
+    // 3. Bind Navigation & Actions
     this.bindEvents();
 
-    // 3. Set Initial Template
+    // 4. Set Initial Template
     this.setTemplate('minimal');
 
-    // 4. Initial layout calculation & setup resize observer
+    // 5. Initial layout calculation & setup resize observer
     this.updateBoardDimensions();
     window.addEventListener('resize', () => {
       this.updateBoardDimensions();
@@ -65,6 +84,72 @@ class App {
   }
 
   bindEvents() {
+    // Gutter Settings Dropdown toggle
+    this.btnGutterSettingsEl.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.gutterDropdownEl.classList.toggle('show');
+    });
+
+    // Close gutter dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!this.gutterDropdownEl.contains(e.target) && !this.btnGutterSettingsEl.contains(e.target)) {
+        this.gutterDropdownEl.classList.remove('show');
+      }
+    });
+
+    // Gutter Width Slider
+    this.gutterWidthSliderEl.addEventListener('input', (e) => {
+      this.gutterSize = parseInt(e.target.value, 10);
+      this.applyGutterSettings();
+      this.wellManager.renderAll();
+    });
+
+    // Gutter Color Picker Input (Native Color Wheel / Dialog)
+    this.gutterColorPickerEl.addEventListener('input', (e) => {
+      this.gutterColor = e.target.value.toLowerCase();
+      this.gutterHexInputEl.value = this.gutterColor;
+      this.applyGutterSettings();
+    });
+
+    // Gutter Hex Text Input
+    this.gutterHexInputEl.addEventListener('input', (e) => {
+      let hex = e.target.value.trim();
+      if (!hex.startsWith('#')) hex = '#' + hex;
+      if (/^#[0-9A-F]{6}$/i.test(hex)) {
+        this.gutterColor = hex.toLowerCase();
+        this.gutterColorPickerEl.value = this.gutterColor;
+        this.applyGutterSettings();
+      }
+    });
+
+    // Color Swatch buttons
+    const swatchBtns = this.gutterDropdownEl.querySelectorAll('.color-swatch-btn');
+    swatchBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const color = btn.dataset.color;
+        if (color) {
+          this.gutterColor = color.toLowerCase();
+          this.gutterColorPickerEl.value = this.gutterColor;
+          this.gutterHexInputEl.value = this.gutterColor;
+          this.applyGutterSettings();
+        }
+      });
+    });
+
+    // Reset Gutter to default button (8px, #dedede)
+    if (this.btnResetGutterEl) {
+      this.btnResetGutterEl.addEventListener('click', () => {
+        this.gutterSize = 8;
+        this.gutterColor = '#dedede';
+        this.gutterWidthSliderEl.value = '8';
+        this.gutterColorPickerEl.value = '#dedede';
+        this.gutterHexInputEl.value = '#dedede';
+        this.applyGutterSettings();
+        this.wellManager.renderAll();
+        this.showToast('Gutter reset to default (8px #dedede)');
+      });
+    }
+
     // Template switcher buttons
     const tabButtons = this.templateSelectorEl.querySelectorAll('.template-btn');
     tabButtons.forEach(btn => {
@@ -117,6 +202,22 @@ class App {
         this.exportBtnTextEl.textContent = originalText;
       }
     });
+  }
+
+  applyGutterSettings() {
+    // Set CSS variables on collageBoard
+    this.collageBoardEl.style.setProperty('--gutter-size', `${this.gutterSize}px`);
+    this.collageBoardEl.style.setProperty('--gutter-color', this.gutterColor);
+
+    // Update UI controls & labels
+    this.gutterWidthValEl.textContent = `${this.gutterSize}px`;
+    this.gutterStatusTextEl.textContent = `${this.gutterSize}px`;
+    this.gutterColorPreviewEl.style.backgroundColor = this.gutterColor;
+
+    // Update statusbar
+    if (this.statusGutterDisplayEl) {
+      this.statusGutterDisplayEl.textContent = `${this.gutterSize}px ${this.gutterColor}`;
+    }
   }
 
   setTemplate(templateId) {

@@ -5,16 +5,16 @@
    ========================================================================== */
 .collage-board {
   position: relative;
-  background-color: #dedede; /* Fixed #dedede gutter color */
-  padding: 8px;              /* Fixed 8px outer border/gutter */
+  background-color: var(--gutter-color, #dedede); /* Dynamic gutter color */
+  padding: var(--gutter-size, 8px);              /* Dynamic outer border/gutter */
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.65);
   border-radius: 4px;
   display: grid;
-  gap: 8px;                  /* Fixed 8px inner gap between wells */
+  gap: var(--gutter-size, 8px);                  /* Dynamic inner gap between wells */
   max-width: 100%;
   max-height: 100%;
   box-sizing: border-box;
-  transition: width 0.2s ease, height 0.2s ease;
+  transition: width 0.2s ease, height 0.2s ease, background-color 0.15s ease, padding 0.15s ease, gap 0.15s ease;
 }
 
 /* Template Grid Definitions */

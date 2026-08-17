@@ -261,6 +261,167 @@ body {
   box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
 }
 
+/* Gutter Customization Controls */
+.gutter-controls-group {
+  position: relative;
+}
+
+.gutter-trigger-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gutter-swatch-preview {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: inline-block;
+}
+
+.gutter-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  background-color: var(--bg-surface-raised);
+  border: 1px solid var(--border-muted);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 14px;
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.gutter-dropdown.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.gutter-setting-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gutter-setting-row label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.gutter-width-input-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gutter-slider {
+  flex: 1;
+  height: 4px;
+  accent-color: var(--accent-primary);
+  cursor: pointer;
+}
+
+.gutter-color-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.color-picker-wrapper {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.color-picker-input {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  width: 48px;
+  height: 48px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.gutter-hex-input {
+  flex: 1;
+  background-color: var(--bg-app);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  padding: 5px 8px;
+  font-size: 12px;
+  text-transform: lowercase;
+}
+
+.gutter-hex-input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+.gutter-swatches {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 4px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.color-swatch-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.color-swatch-btn:hover {
+  transform: scale(1.15);
+  border-color: #ffffff;
+}
+
+.btn-gutter-reset {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: var(--bg-app);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 6px 8px;
+  cursor: pointer;
+  margin-top: 2px;
+  transition: all 0.15s ease;
+}
+
+.btn-gutter-reset:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-surface-active);
+  border-color: var(--border-muted);
+}
+
 .btn-icon {
   background: transparent;
   border: 1px solid var(--border-subtle);

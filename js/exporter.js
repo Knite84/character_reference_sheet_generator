@@ -37,8 +37,9 @@ class RefSheetExporter {
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
 
-    // 1. Fill entire background with the required #dedede gutter color
-    ctx.fillStyle = '#dedede';
+    // 1. Fill entire background with the configured gutter color
+    const computedGutterColor = window.app?.gutterColor || getComputedStyle(boardEl).getPropertyValue('--gutter-color').trim() || '#dedede';
+    ctx.fillStyle = computedGutterColor;
     ctx.fillRect(0, 0, targetWidth, targetHeight);
 
     // Scale factors from screen board to export canvas
