@@ -95,8 +95,16 @@ class RefSheetExporter {
     }
 
     // 3. Export to Blob and trigger local download
-    const mimeType = format === 'jpeg' ? 'image/jpeg' : 'image/png';
-    const extension = format === 'jpeg' ? 'jpg' : 'png';
+    let mimeType = 'image/png';
+    let extension = 'png';
+    if (format === 'jpeg' || format === 'jpg') {
+      mimeType = 'image/jpeg';
+      extension = 'jpg';
+    } else if (format === 'webp') {
+      mimeType = 'image/webp';
+      extension = 'webp';
+    }
+
     const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
     const filename = `refsheet-${template.id}-${targetWidth}x${targetHeight}-${timestamp}.${extension}`;
 

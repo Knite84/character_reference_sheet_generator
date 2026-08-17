@@ -31,7 +31,7 @@ Built specifically for desktop workflows, video generation reference pipelines, 
   - **Clear Well**: Hover and click the `×` button to remove a photo from a slot without losing it in your media library.
   - **Re-center**: Quick one-click reset for zoom and pan.
 - **High-Res Export**:
-  - Export lossless `.PNG` or high-quality `.JPG` with a single click.
+  - Export lossless `.PNG`, high-quality `.WebP`, or high-quality `.JPG` with a single click.
 
 ---
 
