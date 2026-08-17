@@ -94,13 +94,13 @@
   grid-row: 1 / span 2;
 }
 
-/* 3. 3-Column: 3:2 aspect ratio (3000 x 2000 px)
-   3 columns, 1 row (3 tall 1:2 wells)
+/* 3. 1-Column: 1:2 aspect ratio (2000 x 4000 px)
+   1 column, 2 rows (two stacked 1:1 square wells)
 */
-.collage-board[data-template="col3"] {
-  aspect-ratio: 3 / 2;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr;
+.collage-board[data-template="col1"] {
+  aspect-ratio: 1 / 2;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
 }
 
 /* 4. 2-Column: 1:1 aspect ratio (3000 x 3000 px)
@@ -109,6 +109,15 @@
 .collage-board[data-template="col2"] {
   aspect-ratio: 1 / 1;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+}
+
+/* 5. 3-Column: 3:2 aspect ratio (3000 x 2000 px)
+   3 columns, 1 row (3 tall 1:2 wells)
+*/
+.collage-board[data-template="col3"] {
+  aspect-ratio: 3 / 2;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr;
 }
 

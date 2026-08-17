@@ -102,18 +102,17 @@ const TEMPLATES = {
     ]
   },
 
-  col3: {
-    id: 'col3',
-    name: '3-Column Reference Sheet',
-    aspectRatio: '3/2',
-    aspectW: 3,
+  col1: {
+    id: 'col1',
+    name: '1-Column Reference Sheet',
+    aspectRatio: '1/2',
+    aspectW: 1,
     aspectH: 2,
-    exportWidth: 3000,
-    exportHeight: 2000,
+    exportWidth: 2000,
+    exportHeight: 4000,
     slots: [
-      { id: 'col-1', label: '1:2 Column 1', aspect: '1:2', gridArea: { col: 1, row: 1, colSpan: 1, rowSpan: 1 }, unitBounds: { x: 0, y: 0, w: 1, h: 2 } },
-      { id: 'col-2', label: '1:2 Column 2', aspect: '1:2', gridArea: { col: 2, row: 1, colSpan: 1, rowSpan: 1 }, unitBounds: { x: 1, y: 0, w: 1, h: 2 } },
-      { id: 'col-3', label: '1:2 Column 3', aspect: '1:2', gridArea: { col: 3, row: 1, colSpan: 1, rowSpan: 1 }, unitBounds: { x: 2, y: 0, w: 1, h: 2 } }
+      { id: 'col1-top', label: '1:1 Top', aspect: '1:1', gridArea: { col: 1, row: 1, colSpan: 1, rowSpan: 1 }, unitBounds: { x: 0, y: 0, w: 1, h: 1 } },
+      { id: 'col1-bottom', label: '1:1 Bottom', aspect: '1:1', gridArea: { col: 1, row: 2, colSpan: 1, rowSpan: 1 }, unitBounds: { x: 0, y: 1, w: 1, h: 1 } }
     ]
   },
 
@@ -128,6 +127,21 @@ const TEMPLATES = {
     slots: [
       { id: 'col-1', label: '1:2 Column 1', aspect: '1:2', gridArea: { col: 1, row: 1, colSpan: 1, rowSpan: 1 }, unitBounds: { x: 0, y: 0, w: 1, h: 2 } },
       { id: 'col-2', label: '1:2 Column 2', aspect: '1:2', gridArea: { col: 2, row: 1, colSpan: 1, rowSpan: 1 }, unitBounds: { x: 1, y: 0, w: 1, h: 2 } }
+    ]
+  },
+
+  col3: {
+    id: 'col3',
+    name: '3-Column Reference Sheet',
+    aspectRatio: '3/2',
+    aspectW: 3,
+    aspectH: 2,
+    exportWidth: 3000,
+    exportHeight: 2000,
+    slots: [
+      { id: 'col-1', label: '1:2 Column 1', aspect: '1:2', gridArea: { col: 1, row: 1, colSpan: 1, rowSpan: 1 }, unitBounds: { x: 0, y: 0, w: 1, h: 2 } },
+      { id: 'col-2', label: '1:2 Column 2', aspect: '1:2', gridArea: { col: 2, row: 1, colSpan: 1, rowSpan: 1 }, unitBounds: { x: 1, y: 0, w: 1, h: 2 } },
+      { id: 'col-3', label: '1:2 Column 3', aspect: '1:2', gridArea: { col: 3, row: 1, colSpan: 1, rowSpan: 1 }, unitBounds: { x: 2, y: 0, w: 1, h: 2 } }
     ]
   },
 
