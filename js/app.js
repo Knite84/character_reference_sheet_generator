@@ -186,13 +186,31 @@ class App {
       const originalText = this.exportBtnTextEl.textContent;
 
       try {
+        let fileHandle = null;
+
+        if (this.exporter.supportsSaveDialog()) {
+          // Open the native "Save As" dialog immediately (while click activation is fresh)
+          this.btnExportEl.disabled = true;
+          this.exportBtnTextEl.textContent = 'Choose save location...';
+
+          try {
+            const suggestedName = this.exporter.buildSuggestedFilename(format);
+            fileHandle = await this.exporter.requestSaveHandle(suggestedName, format);
+          } catch (err) {
+            if (err && err.name === 'AbortError') {
+              return; // User cancelled the dialog
+            }
+            console.warn('Save dialog unavailable, falling back to download:', err);
+          }
+        }
+
         this.btnExportEl.disabled = true;
         this.exportBtnTextEl.textContent = 'Rendering High-Res...';
 
         // Allow UI to repaint
         await new Promise(r => setTimeout(r, 50));
 
-        const result = await this.exporter.exportSheet(format);
+        const result = await this.exporter.exportSheet(format, undefined, { fileHandle });
         this.showToast(`Saved ${result.filename} (${result.width}x${result.height}px)!`);
       } catch (err) {
         console.error('Export failed:', err);

@@ -11,7 +11,7 @@ class RefSheetExporter {
     this.mediaPool = mediaPool;
   }
 
-  async exportSheet(format = 'png', quality = 0.95) {
+  async exportSheet(format = 'png', quality = 0.95, options = {}) {
     const template = this.wellManager.currentTemplate;
     if (!template) {
       throw new Error('No active template found.');
@@ -95,39 +95,87 @@ class RefSheetExporter {
       ctx.restore();
     }
 
-    // 3. Export to Blob and trigger local download
-    let mimeType = 'image/png';
-    let extension = 'png';
-    if (format === 'jpeg' || format === 'jpg') {
-      mimeType = 'image/jpeg';
-      extension = 'jpg';
-    } else if (format === 'webp') {
-      mimeType = 'image/webp';
-      extension = 'webp';
-    }
+    // 3. Encode canvas to Blob
+    const { mimeType, extension } = this.getFormatInfo(format);
 
-    const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-    const filename = `refsheet-${template.id}-${targetWidth}x${targetHeight}-${timestamp}.${extension}`;
-
-    return new Promise((resolve, reject) => {
-      canvas.toBlob((blob) => {
-        if (!blob) {
+    const blob = await new Promise((resolve, reject) => {
+      canvas.toBlob((b) => {
+        if (!b) {
           reject(new Error('Failed to generate image blob.'));
           return;
         }
-
-        const downloadUrl = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = downloadUrl;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        // Revoke after a moment
-        setTimeout(() => URL.revokeObjectURL(downloadUrl), 5000);
-        resolve({ filename, width: targetWidth, height: targetHeight });
+        resolve(b);
       }, mimeType, quality);
+    });
+
+    // 4a. Write to the file chosen via the native "Save As" dialog (File System Access API)
+    if (options.fileHandle) {
+      const writable = await options.fileHandle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+
+      return { filename: options.fileHandle.name, width: targetWidth, height: targetHeight };
+    }
+
+    // 4b. Fallback: trigger a local download to the browser's download folder
+    const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    const filename = `refsheet-${template.id}-${targetWidth}x${targetHeight}-${timestamp}.${extension}`;
+
+    const downloadUrl = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Revoke after a moment
+    setTimeout(() => URL.revokeObjectURL(downloadUrl), 5000);
+
+    return { filename, width: targetWidth, height: targetHeight };
+  }
+
+  supportsSaveDialog() {
+    return typeof window.showSaveFilePicker === 'function';
+  }
+
+  getFormatInfo(format = 'png') {
+    switch (format) {
+      case 'jpeg':
+      case 'jpg':
+        return { mimeType: 'image/jpeg', extension: 'jpg' };
+      case 'webp':
+        return { mimeType: 'image/webp', extension: 'webp' };
+      default:
+        return { mimeType: 'image/png', extension: 'png' };
+    }
+  }
+
+  buildSuggestedFilename(format = 'png') {
+    const template = this.wellManager.currentTemplate;
+    const { extension } = this.getFormatInfo(format);
+    if (!template) return `refsheet.${extension}`;
+
+    const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    return `refsheet-${template.id}-${template.exportWidth}x${template.exportHeight}-${timestamp}.${extension}`;
+  }
+
+  async requestSaveHandle(suggestedName, format = 'png') {
+    const { mimeType, extension } = this.getFormatInfo(format);
+    const descriptions = {
+      'image/png': 'PNG image',
+      'image/jpeg': 'JPEG image',
+      'image/webp': 'WebP image'
+    };
+
+    return window.showSaveFilePicker({
+      suggestedName,
+      types: [
+        {
+          description: descriptions[mimeType] || 'Image',
+          accept: { [mimeType]: ['.' + extension] }
+        }
+      ]
     });
   }
 }
