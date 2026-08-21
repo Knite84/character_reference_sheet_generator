@@ -121,7 +121,16 @@
   grid-template-rows: 1fr;
 }
 
-/* 5. 4-Grid: 1:1 aspect ratio (3000 x 3000 px)
+/* 6. 4-Column: 4:2 aspect ratio (4000 x 2000 px)
+   4 columns, 1 row (4 tall 1:2 wells)
+*/
+.collage-board[data-template="col4"] {
+  aspect-ratio: 4 / 2;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+}
+
+/* 7. 4-Grid: 1:1 aspect ratio (3000 x 3000 px)
    2 columns, 2 rows (4 equal 1:1 square wells)
 */
 .collage-board[data-template="grid4"] {
@@ -130,7 +139,7 @@
   grid-template-rows: 1fr 1fr;
 }
 
-/* 6. 9-Grid: 1:1 aspect ratio (3500 x 3500 px)
+/* 8. 9-Grid: 1:1 aspect ratio (3500 x 3500 px)
    3 columns, 3 rows (9 equal 1:1 wells)
 */
 .collage-board[data-template="grid9"] {

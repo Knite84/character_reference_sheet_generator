@@ -145,6 +145,22 @@ const TEMPLATES = {
     ]
   },
 
+  col4: {
+    id: 'col4',
+    name: '4-Column Reference Sheet',
+    aspectRatio: '4/2',
+    aspectW: 4,
+    aspectH: 2,
+    exportWidth: 4000,
+    exportHeight: 2000,
+    slots: [
+      { id: 'col-1', label: '1:2 Column 1', aspect: '1:2', gridArea: { col: 1, row: 1, colSpan: 1, rowSpan: 1 }, unitBounds: { x: 0, y: 0, w: 1, h: 2 } },
+      { id: 'col-2', label: '1:2 Column 2', aspect: '1:2', gridArea: { col: 2, row: 1, colSpan: 1, rowSpan: 1 }, unitBounds: { x: 1, y: 0, w: 1, h: 2 } },
+      { id: 'col-3', label: '1:2 Column 3', aspect: '1:2', gridArea: { col: 3, row: 1, colSpan: 1, rowSpan: 1 }, unitBounds: { x: 2, y: 0, w: 1, h: 2 } },
+      { id: 'col-4', label: '1:2 Column 4', aspect: '1:2', gridArea: { col: 4, row: 1, colSpan: 1, rowSpan: 1 }, unitBounds: { x: 3, y: 0, w: 1, h: 2 } }
+    ]
+  },
+
   grid4: {
     id: 'grid4',
     name: '4-Grid Reference Sheet',
