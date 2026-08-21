@@ -62,14 +62,14 @@ class MediaPool {
     });
   }
 
-  async handleFiles(files) {
+  async handleFiles(files, { showToastMsg = true } = {}) {
     const imageFiles = files.filter(f => f.type.startsWith('image/'));
     if (imageFiles.length === 0) {
       window.app?.showToast('Please upload valid image files.');
-      return;
+      return [];
     }
 
-    let addedCount = 0;
+    const addedIds = [];
     for (const file of imageFiles) {
       const mediaId = 'media_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
       const blobUrl = URL.createObjectURL(file);
@@ -91,7 +91,7 @@ class MediaPool {
             imgElement: img
           };
           this.mediaItems.set(mediaId, mediaObj);
-          addedCount++;
+          addedIds.push(mediaId);
           resolve();
         };
         img.onerror = () => {
@@ -103,7 +103,13 @@ class MediaPool {
 
     this.render();
     this.onMediaChange();
-    window.app?.showToast(`Added ${addedCount} photo${addedCount > 1 ? 's' : ''}`);
+
+    if (showToastMsg && addedIds.length > 0) {
+      window.app?.showToast(`Added ${addedIds.length} photo${addedIds.length > 1 ? 's' : ''}`);
+    }
+
+    // Return IDs of successfully ingested images so callers can auto-place them
+    return addedIds;
   }
 
   getMedia(id) {

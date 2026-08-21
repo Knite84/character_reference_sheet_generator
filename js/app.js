@@ -202,6 +202,64 @@ class App {
         this.exportBtnTextEl.textContent = originalText;
       }
     });
+
+    // External file drag & drop (e.g. from Windows Explorer) onto the workspace.
+    // All images are added to the Media Library; empty wells are auto-filled at random.
+    this.externalDragDepth = 0;
+    const hasFiles = (e) => e.dataTransfer && Array.from(e.dataTransfer.types || []).includes('Files');
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      this.workspaceViewportEl.addEventListener(eventName, (e) => {
+        if (!hasFiles(e)) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'copy';
+        if (eventName === 'dragenter') this.externalDragDepth++;
+        this.workspaceViewportEl.classList.add('file-drop-hover');
+      });
+    });
+
+    this.workspaceViewportEl.addEventListener('dragleave', () => {
+      this.externalDragDepth = Math.max(0, this.externalDragDepth - 1);
+      if (this.externalDragDepth === 0) {
+        this.workspaceViewportEl.classList.remove('file-drop-hover');
+      }
+    });
+
+    this.workspaceViewportEl.addEventListener('drop', async (e) => {
+      if (!hasFiles(e)) return;
+      e.preventDefault();
+      e.stopPropagation();
+      this.externalDragDepth = 0;
+      this.workspaceViewportEl.classList.remove('file-drop-hover');
+
+      try {
+        const addedIds = await this.mediaPool.handleFiles(Array.from(e.dataTransfer.files), { showToastMsg: false });
+        if (addedIds.length === 0) return;
+
+        const placedCount = this.wellManager.autoFillFromMediaIds(addedIds);
+        const libraryOnlyCount = addedIds.length - placedCount;
+
+        let msg = `Added ${addedIds.length} photo${addedIds.length > 1 ? 's' : ''}`;
+        if (placedCount > 0) {
+          msg += ` • ${placedCount} auto-placed into empty wells`;
+          if (libraryOnlyCount > 0) msg += ` (${libraryOnlyCount} library only)`;
+        } else {
+          msg += ' • all wells already full';
+        }
+        this.showToast(msg);
+      } catch (err) {
+        console.error('External drop handling failed:', err);
+        this.showToast('Failed to import dropped images.');
+      }
+    });
+
+    // Prevent the browser from navigating/opening files dropped outside the workspace
+    document.addEventListener('dragover', (e) => {
+      if (hasFiles(e)) e.preventDefault();
+    });
+    document.addEventListener('drop', (e) => {
+      if (hasFiles(e)) e.preventDefault();
+    });
   }
 
   applyGutterSettings() {

@@ -392,6 +392,38 @@ class WellManager {
     this.onStateChange();
   }
 
+  getEmptySlotIds() {
+    const emptySlotIds = [];
+    this.wellStates.forEach((state, slotId) => {
+      if (!state.mediaId) emptySlotIds.push(slotId);
+    });
+    return emptySlotIds;
+  }
+
+  autoFillFromMediaIds(mediaIds) {
+    if (!Array.isArray(mediaIds) || mediaIds.length === 0) return [];
+
+    const emptySlotIds = this.getEmptySlotIds();
+    const shuffledMedia = [...mediaIds];
+
+    // Fisher-Yates shuffle so images land in random empty wells
+    for (let i = shuffledMedia.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledMedia[i], shuffledMedia[j]] = [shuffledMedia[j], shuffledMedia[i]];
+    }
+    for (let i = emptySlotIds.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [emptySlotIds[i], emptySlotIds[j]] = [emptySlotIds[j], emptySlotIds[i]];
+    }
+
+    const fillCount = Math.min(shuffledMedia.length, emptySlotIds.length);
+    for (let i = 0; i < fillCount; i++) {
+      this.setWellMedia(emptySlotIds[i], shuffledMedia[i]);
+    }
+
+    return fillCount;
+  }
+
   swapWells(slotAId, slotBId) {
     const stateA = this.wellStates.get(slotAId);
     const stateB = this.wellStates.get(slotBId);

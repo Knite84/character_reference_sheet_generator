@@ -714,6 +714,24 @@ body {
   position: relative;
 }
 
+/* External File Drop Feedback (drag from OS file explorer) */
+.workspace-viewport.file-drop-hover::after {
+  content: 'Drop images to add to library & fill empty wells';
+  position: absolute;
+  inset: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--accent-primary);
+  border-radius: var(--radius-lg);
+  background-color: rgba(59, 130, 246, 0.08);
+  color: var(--accent-primary);
+  font-size: 14px;
+  font-weight: 600;
+  pointer-events: none;
+  z-index: 40;
+}
+
 /* Workspace Statusbar (Bottom) */
 .workspace-statusbar {
   height: var(--statusbar-height);
